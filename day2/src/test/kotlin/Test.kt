@@ -51,4 +51,19 @@ class Tests {
 
         assertThat(spreadsheet.checksum(::diff)).isEqualTo(44887)
     }
+
+    @Test
+    fun `it should find evenly divisible values`() {
+        val xs = listOf(5, 9, 2, 8)
+
+        assertThat(evenlyDiv(xs)).isEqualTo(Pair(2, 8))
+    }
+
+    @Test
+    fun `it should compute checksum of the puzzle 2 input`() {
+        val input = Tests::class.java.getResource("input").readText()
+        val spreadsheet = Spreadsheet.parse(input)
+
+        assertThat(spreadsheet.checksum { xs -> evenlyDiv(xs).div() }).isEqualTo(242)
+    }
 }

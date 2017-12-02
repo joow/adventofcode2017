@@ -28,3 +28,15 @@ private fun replace(minMax: Pair<Int, Int>, n: Int)= when {
 fun diff(xs: List<Int>) = minMax(xs).diff()
 
 fun Pair<Int, Int>.diff() = second - first
+
+fun evenlyDiv(xs: List<Int>) = combinations(xs)
+        .filterNot { it.isSameNumber() }
+        .first { it.isEvenlyDivisible() }
+
+private fun <T> combinations(xs: List<T>) = xs.flatMap { t1 -> xs.map { t2 -> Pair(t1, t2) } }
+
+private fun Pair<Int, Int>.isSameNumber() = first == second
+
+private fun Pair<Int, Int>.isEvenlyDivisible() = second.rem(first) == 0
+
+fun Pair<Int, Int>.div() = second.div(first)
