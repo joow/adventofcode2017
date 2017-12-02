@@ -25,23 +25,23 @@ class Tests {
 
     @Test
     fun `it should return min and max values of a row`() {
-        val row = Spreadsheet.Row(listOf(5, 1, 9, 5))
+        val xs = listOf(5, 1, 9, 5)
 
-        assertThat(row.minMax()).isEqualTo(Pair(1, 9))
+        assertThat(minMax(xs)).isEqualTo(Pair(1, 9))
     }
 
     @Test
     fun `it should return the difference of a row`() {
-        val row = Spreadsheet.Row(listOf(5, 1, 9, 5))
+        val xs = listOf(5, 1, 9, 5)
 
-        assertThat(row.diff()).isEqualTo(8)
+        assertThat(diff(xs)).isEqualTo(8)
     }
 
     @Test
     fun `it should compute checksum of a sample spreadsheet`() {
         val spreadsheet = Spreadsheet.parse(input)
 
-        assertThat(spreadsheet.checksum()).isEqualTo(18)
+        assertThat(spreadsheet.checksum(::diff)).isEqualTo(18)
     }
 
     @Test
@@ -49,6 +49,6 @@ class Tests {
         val input = Tests::class.java.getResource("input").readText()
         val spreadsheet = Spreadsheet.parse(input)
 
-        assertThat(spreadsheet.checksum()).isEqualTo(44887)
+        assertThat(spreadsheet.checksum(::diff)).isEqualTo(44887)
     }
 }
