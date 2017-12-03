@@ -5,6 +5,8 @@ fun grid(size: Int) = generateSequence(ACCESS_PORT) { it.next() }.take(size)
 
 data class Position(val x: Int, val y: Int) {
     fun steps(pos: Position) = abs(x - pos.x) + abs(y - pos.y)
+
+    fun isAdjacent(pos: Position) = abs(x - pos.x) <= 1 && abs(y - pos.y) <= 1
 }
 
 data class Square(val pos: Position, val advance: Advance) {
@@ -15,6 +17,8 @@ data class Square(val pos: Position, val advance: Advance) {
     fun next() = advance.next(pos)
 
     fun steps() = pos.steps(ACCESS_PORT.pos)
+
+    fun isAdjacent(square: Square) = pos.isAdjacent(square.pos)
 }
 
 enum class Direction {
@@ -56,4 +60,22 @@ class Advance(val direction: Direction, val curr: Int, val count: Int) {
     private fun nextAdvance() =
             if (curr == count - 1) Advance(direction.next(), 0, count + direction.turn())
             else Advance(direction, curr + 1, count)
+}
+
+fun sums(grid: Sequence<Square>): List<Pair<Square, Int>> {
+    val sums = mutableListOf<Pair<Square, Int>>()
+
+    for (i in 0 until grid.count()) {
+        val square = grid.drop(i).first()
+        val sum =
+                if (i == 0) 1
+                else sums
+                        .take(i)
+                        .filter { (sq, _) -> sq.isAdjacent(square) }
+                        .map { it.second }
+                        .sum()
+        sums.add(Pair(square, sum))
+    }
+
+    return sums
 }

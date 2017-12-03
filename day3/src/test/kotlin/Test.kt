@@ -59,4 +59,36 @@ class Tests {
         val square = grid.last()
         assertThat(square.steps()).isEqualTo(326)
     }
+
+    @Test
+    fun `it should check adjacent position()`() {
+        val pos = Position(0, 0)
+        val horizontalAdjacentPos = Position(1, 0)
+        val verticalAdjacentPos = Position(0, 1)
+        val diagnonalAdjacentPos = Position(1, 1)
+        val nonAdjacentPos = Position(2, 0)
+
+        assertThat(horizontalAdjacentPos.isAdjacent(pos)).isTrue()
+        assertThat(verticalAdjacentPos.isAdjacent(pos)).isTrue()
+        assertThat(diagnonalAdjacentPos.isAdjacent(pos)).isTrue()
+        assertThat(nonAdjacentPos.isAdjacent(pos)).isFalse()
+    }
+
+    @Test
+    fun `it should compute value of each square`() {
+        val grid = grid(23)
+        val sums = sums(grid)
+
+        assertThat(sums.last().second).isEqualTo(806)
+    }
+
+    @Test
+    fun `it should resolve puzzle 2`() {
+        val grid = grid(1024)
+        val sums = sums(grid)
+
+        val answer = sums.first { (_, sum) -> sum > 361527 }.second
+
+        assertThat(answer).isEqualTo(363010)
+    }
 }
