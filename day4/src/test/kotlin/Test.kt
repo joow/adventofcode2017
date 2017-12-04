@@ -1,5 +1,4 @@
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Ignore
 import org.junit.Test
 
 class Tests {
