@@ -1,5 +1,8 @@
 fun score(group: Group): Int = group.score + group.groups.map { score(it) }.sum()
 
+fun nonCanceled(group: Group): Int =
+        group.garbages.map { it.nonCanceled }.sum() + group.groups.map { nonCanceled(it) }.sum()
+
 data class Group(val groups: List<Group>, val garbages: List<Garbage>, val score: Int)
 
 /**
@@ -40,7 +43,7 @@ class GroupParser {
     }
 }
 
-class Garbage
+data class Garbage(val nonCanceled: Int)
 
 /**
  * Result of parsing a garbage, returns the parsed garbage and the number of consumed characters.
@@ -50,13 +53,17 @@ typealias GarbageParsing = Pair<Garbage, Int>
 class GarbageParser {
     companion object {
         fun parse(s: String): GarbageParsing {
+            var nonCanceled = 0
             var i = 1
             while (i < s.length) {
                 val c = s[i]
                 when (c) {
-                    '>' -> return GarbageParsing(Garbage(), i + 1)
+                    '>' -> return GarbageParsing(Garbage(nonCanceled), i + 1)
                     '!' -> i += 2
-                    else -> i += 1
+                    else -> {
+                        nonCanceled += 1
+                        i += 1
+                    }
                 }
             }
 

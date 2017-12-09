@@ -171,11 +171,83 @@ class Tests {
     }
 
     @Test
-    fun `it should compute score for input`() {
+    fun `it should compute score for puzzle input`() {
         val input = Tests::class.java.getResource("input").readText()
 
         val parsing = GroupParser.parse(input)
 
         assertThat(score(parsing.first)).isEqualTo(13154)
     }
-}
+
+    @Test
+    fun `it should count canceled characters for empty group`() {
+        val input = "{}"
+
+        val parsing = GroupParser.parse(input)
+
+        assertThat(nonCanceled(parsing.first)).isEqualTo(0)
+    }
+
+    @Test
+    fun `it should count non-canceled characters for garbage`() {
+        val garbage = "<random characters>"
+
+        val parsing = GarbageParser.parse(garbage)
+
+        assertThat(parsing.first.nonCanceled).isEqualTo(17)
+    }
+
+    @Test
+    fun `it should count non-canceled characters for nested garbages`() {
+        val garbage = "<<<<>"
+
+        val parsing = GarbageParser.parse(garbage)
+
+        assertThat(parsing.first.nonCanceled).isEqualTo(3)
+    }
+
+    @Test
+    fun `it should count non-canceled characters for garbage with canceling characted`() {
+        val garbage = "<{!>}>"
+
+        val parsing = GarbageParser.parse(garbage)
+
+        assertThat(parsing.first.nonCanceled).isEqualTo(2)
+    }
+
+    @Test
+    fun `it should count non-canceled characters for garbage with only canceling character`() {
+        val garbage = "<!!>"
+
+        val parsing = GarbageParser.parse(garbage)
+
+        assertThat(parsing.first.nonCanceled).isEqualTo(0)
+    }
+
+    @Test
+    fun `it should count non-canceled characters for garbage with multiple canceling characters`() {
+        val garbage = "<!!!>>"
+
+        val parsing = GarbageParser.parse(garbage)
+
+        assertThat(parsing.first.nonCanceled).isEqualTo(0)
+    }
+
+    @Test
+    fun `it should count non-canceled characters for garbage with random characters mixed`() {
+        val garbage = "<{o\"i!a,<{i<a>"
+
+        val parsing = GarbageParser.parse(garbage)
+
+        assertThat(parsing.first.nonCanceled).isEqualTo(10)
+    }
+
+    @Test
+    fun `it should count non-canceled characters for puzzle input`() {
+        val garbage = Tests::class.java.getResource("input").readText()
+
+        val parsing = GroupParser.parse(garbage)
+
+        assertThat(nonCanceled(parsing.first)).isEqualTo(10)
+    }
+ }
