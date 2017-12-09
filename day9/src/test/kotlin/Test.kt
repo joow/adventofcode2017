@@ -248,6 +248,6 @@ class Tests {
 
         val parsing = GroupParser.parse(garbage)
 
-        assertThat(nonCanceled(parsing.first)).isEqualTo(10)
+        assertThat(nonCanceled(parsing.first)).isEqualTo(6369)
     }
  }
