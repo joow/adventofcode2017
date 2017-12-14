@@ -19,38 +19,27 @@ class Tests {
 
     @Test
     fun `it should not scan if range is 0`() {
-        val layer = Layer(0)
+        val layer = NoScannerLayer()
 
-        layer.scan()
-
-        assertThat(layer.scannerPosition).isEqualTo(-1)
+        assertThat(layer.isAtTop()).isFalse()
     }
 
     @Test
     fun `it should scan forward`() {
-        val layer = Layer(3)
+        val layer = ScannerLayer(3)
 
         layer.scan()
 
-        assertThat(layer.scannerPosition).isEqualTo(1)
-    }
-
-    @Test
-    fun `it should scan backward`() {
-        val layer = Layer(3)
-
-        repeat(3) { layer.scan() }
-
-        assertThat(layer.scannerPosition).isEqualTo(1)
+        assertThat(layer.isAtTop()).isFalse()
     }
 
     @Test
     fun `it should scan forward and backward`() {
-        val layer = Layer(4)
+        val layer = ScannerLayer(4)
 
-        repeat(8) { layer.scan() }
+        repeat(6) { layer.scan() }
 
-        assertThat(layer.scannerPosition).isEqualTo(2)
+        assertThat(layer.isAtTop()).isTrue()
     }
 
     @Test
@@ -59,7 +48,7 @@ class Tests {
 
         firewall.scan()
 
-        assertThat(firewall.layers.first().scannerPosition).isEqualTo(1)
+        assertThat(firewall.layers.first().isAtTop()).isFalse()
     }
 
     @Test

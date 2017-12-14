@@ -8,11 +8,11 @@ fun parse(s: String): Firewall {
         val range = line.substringAfter(':').trim().toInt()
 
         while (currentDepth < depth) {
-            layers.add(Layer())
+            layers.add(NoScannerLayer())
             currentDepth++
         }
 
-        layers.add(Layer(range))
+        layers.add(ScannerLayer(range))
         currentDepth++
     }
 
@@ -35,8 +35,8 @@ class Firewall(val layers: List<Layer>) {
 
         for (depth in 0 until layers.size) {
             val layer = layers[depth]
-            if (layer.scannerPosition == 0) {
-                severity += (depth * layer.range)
+            if (layer.isAtTop()) {
+                severity += (depth * layer.range())
             }
             scan()
         }
@@ -47,7 +47,7 @@ class Firewall(val layers: List<Layer>) {
     fun caught(): Boolean {
         for (depth in 0 until layers.size) {
             val layer = layers[depth]
-            if (layer.scannerPosition == 0) {
+            if (layer.isAtTop()) {
                 return true
             }
             scan()
@@ -59,27 +59,38 @@ class Firewall(val layers: List<Layer>) {
     fun copyOf() = Firewall(layers.map { it.copyOf() })
 }
 
-class Layer(val range: Int = 0) {
+sealed class Layer {
+    abstract fun scan()
+    abstract fun range(): Int
+    abstract fun isAtTop(): Boolean
+    abstract fun copyOf(): Layer
+}
 
-    var scannerPosition: Int = 0
-    get() = if (range == 0) -1 else field
+class ScannerLayer(val range: Int) : Layer() {
 
-    var scannerAdvance: Int = 1
+    private var scannerPosition: Int = 0
 
-    fun scan() {
-        if (range > 0) {
-            scannerPosition += scannerAdvance
+    private val moves = (range - 1) * 2
 
-            if (scannerPosition == range - 1) scannerAdvance = -1
-            else if (scannerPosition ==0) scannerAdvance = 1
-        }
+    override fun scan() {
+        scannerPosition++
     }
 
-    fun copyOf(): Layer {
-        val copy = Layer(range)
+    override fun range() = range
+
+    override fun isAtTop() = scannerPosition % moves == 0
+
+    override fun copyOf(): Layer {
+        val copy = ScannerLayer(range)
         copy.scannerPosition = scannerPosition
-        copy.scannerAdvance = scannerAdvance
 
         return copy
     }
+}
+
+class NoScannerLayer : Layer() {
+    override fun scan() {}
+    override fun range() = 0
+    override fun isAtTop() = false
+    override fun copyOf() = this
 }
