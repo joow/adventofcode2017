@@ -28,14 +28,14 @@ class Tests {
     fun `it should get lowest bits of a Long value`() {
         val lowestBits = lowestBits(1092455)
 
-        assertThat(lowestBits).isEqualTo("1010101101100111")
+        assertThat(lowestBits).isEqualTo(43879L)
     }
 
     @Test
     fun `it should get lowest bits of a small Long value`() {
         val lowestBits = lowestBits(16)
 
-        assertThat(lowestBits).isEqualTo("0000000000010000")
+        assertThat(lowestBits).isEqualTo(16)
     }
 
     @Test
