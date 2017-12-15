@@ -3,14 +3,7 @@ fun generator(seed: Long, factor: Long, criteria: (Long) -> Boolean = { true }) 
 
 fun lowestBits(n: Long): Long = n and 0b1111111111111111
 
-fun matches(generatorA: Iterator<Long>, generatorB: Iterator<Long>, rounds: Int = 40_000_000): Int {
-
-    var matches = 0
-    for (i in 0..rounds) {
-        val a = generatorA.next()
-        val b = generatorB.next()
-        if (lowestBits(a) == lowestBits(b)) matches++
-    }
-
-    return matches
-}
+fun matches(generatorA: Iterator<Long>, generatorB: Iterator<Long>, rounds: Int = 40_000_000) =
+        generateSequence { Pair(generatorA.next(), generatorB.next()) }
+                .take(rounds)
+                .count { pair -> lowestBits(pair.first) == lowestBits(pair.second) }
