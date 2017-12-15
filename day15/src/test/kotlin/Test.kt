@@ -4,7 +4,7 @@ import org.junit.Test
 class Tests {
     @Test
     fun `it should generate next values for generator A`() {
-        val generator = Generator(65, 16807)
+        val generator = generator(65, 16807)
 
         assertThat(generator.next()).isEqualTo(1092455)
         assertThat(generator.next()).isEqualTo(1181022009)
@@ -15,7 +15,7 @@ class Tests {
 
     @Test
     fun `it should generate next values for generator B`() {
-        val generator = Generator(8921, 48271)
+        val generator = generator(8921, 48271)
 
         assertThat(generator.next()).isEqualTo(430625591)
         assertThat(generator.next()).isEqualTo(1233683848)
@@ -40,8 +40,8 @@ class Tests {
 
     @Test
     fun `it should count matching pairs for a few rounds`() {
-        val generatorA = Generator(65, 16807)
-        val generatorB = Generator(8921, 48271)
+        val generatorA = generator(65, 16807)
+        val generatorB = generator(8921, 48271)
 
         val matches = matches(generatorA, generatorB, 5)
 
@@ -50,8 +50,8 @@ class Tests {
 
     @Test
     fun `it should count matching pairs`() {
-        val generatorA = Generator(65, 16807)
-        val generatorB = Generator(8921, 48271)
+        val generatorA = generator(65, 16807)
+        val generatorB = generator(8921, 48271)
 
         val matches = matches(generatorA, generatorB)
 
@@ -60,8 +60,8 @@ class Tests {
 
     @Test
     fun `it should solve puzzle 1`() {
-        val generatorA = Generator(703, 16807)
-        val generatorB = Generator(516, 48271)
+        val generatorA = generator(703, 16807)
+        val generatorB = generator(516, 48271)
 
         val matches = matches(generatorA, generatorB)
 
@@ -70,7 +70,7 @@ class Tests {
 
     @Test
     fun `it should generate values matching criteria for generator A`() {
-        val generator = Generator(65, 16807) { it % 4 == 0L }
+        val generator = generator(65, 16807) { it % 4 == 0L }
 
         assertThat(generator.next()).isEqualTo(1352636452)
         assertThat(generator.next()).isEqualTo(1992081072)
@@ -81,7 +81,7 @@ class Tests {
 
     @Test
     fun `it should generate values matching criteria for generator B`() {
-        val generator = Generator(8921, 48271) { it % 8 == 0L }
+        val generator = generator(8921, 48271) { it % 8 == 0L }
 
         assertThat(generator.next()).isEqualTo(1233683848)
         assertThat(generator.next()).isEqualTo(862516352)
@@ -92,8 +92,8 @@ class Tests {
 
     @Test
     fun `it should count matching pairs for generators with criteria`() {
-        val generatorA = Generator(65, 16807) { it % 4 == 0L }
-        val generatorB = Generator(8921, 48271) { it % 8 == 0L }
+        val generatorA = generator(65, 16807) { it % 4 == 0L }
+        val generatorB = generator(8921, 48271) { it % 8 == 0L }
 
         val matches = matches(generatorA, generatorB, 5_000_000)
 
@@ -102,8 +102,8 @@ class Tests {
 
     @Test
     fun `it should solve puzzle 2`() {
-        val generatorA = Generator(703, 16807) { it % 4 == 0L }
-        val generatorB = Generator(516, 48271) { it % 8 == 0L }
+        val generatorA = generator(703, 16807) { it % 4 == 0L }
+        val generatorB = generator(516, 48271) { it % 8 == 0L }
 
         val matches = matches(generatorA, generatorB, 5_000_000)
 
