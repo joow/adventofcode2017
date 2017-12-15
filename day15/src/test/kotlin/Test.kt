@@ -6,22 +6,14 @@ class Tests {
     fun `it should generate next values for generator A`() {
         val generator = generator(65, 16807)
 
-        assertThat(generator.next()).isEqualTo(1092455)
-        assertThat(generator.next()).isEqualTo(1181022009)
-        assertThat(generator.next()).isEqualTo(245556042)
-        assertThat(generator.next()).isEqualTo(1744312007)
-        assertThat(generator.next()).isEqualTo(1352636452)
+        assertThat(generator.take(5).toList()).containsExactly(1092455, 1181022009, 245556042, 1744312007, 1352636452)
     }
 
     @Test
     fun `it should generate next values for generator B`() {
         val generator = generator(8921, 48271)
 
-        assertThat(generator.next()).isEqualTo(430625591)
-        assertThat(generator.next()).isEqualTo(1233683848)
-        assertThat(generator.next()).isEqualTo(1431495498)
-        assertThat(generator.next()).isEqualTo(137874439)
-        assertThat(generator.next()).isEqualTo(285222916)
+        assertThat(generator.take(5).toList()).containsExactly(430625591, 1233683848, 1431495498, 137874439, 285222916)
     }
 
     @Test
@@ -72,22 +64,14 @@ class Tests {
     fun `it should generate values matching criteria for generator A`() {
         val generator = generator(65, 16807) { it % 4 == 0L }
 
-        assertThat(generator.next()).isEqualTo(1352636452)
-        assertThat(generator.next()).isEqualTo(1992081072)
-        assertThat(generator.next()).isEqualTo(530830436)
-        assertThat(generator.next()).isEqualTo(1980017072)
-        assertThat(generator.next()).isEqualTo(740335192)
+        assertThat(generator.take(5).toList()).containsExactly(1352636452, 1992081072, 530830436, 1980017072, 740335192)
     }
 
     @Test
     fun `it should generate values matching criteria for generator B`() {
         val generator = generator(8921, 48271) { it % 8 == 0L }
 
-        assertThat(generator.next()).isEqualTo(1233683848)
-        assertThat(generator.next()).isEqualTo(862516352)
-        assertThat(generator.next()).isEqualTo(1159784568)
-        assertThat(generator.next()).isEqualTo(1616057672)
-        assertThat(generator.next()).isEqualTo(412269392)
+        assertThat(generator.take(5).toList()).containsExactly(1233683848, 862516352, 1159784568, 1616057672, 412269392)
     }
 
     @Test
