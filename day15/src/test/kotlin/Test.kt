@@ -1,6 +1,9 @@
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
+private fun isMult4(n: Long) = n and 3 == 0L
+private fun isMult8(n: Long) = n and 7 == 0L
+
 class Tests {
     @Test
     fun `it should generate next values for generator A`() {
@@ -62,22 +65,22 @@ class Tests {
 
     @Test
     fun `it should generate values matching criteria for generator A`() {
-        val generator = generator(65, 16807) { it % 4 == 0L }
+        val generator = generator(65, 16807) { isMult4(it) }
 
         assertThat(generator.take(5).toList()).containsExactly(1352636452, 1992081072, 530830436, 1980017072, 740335192)
     }
 
     @Test
     fun `it should generate values matching criteria for generator B`() {
-        val generator = generator(8921, 48271) { it % 8 == 0L }
+        val generator = generator(8921, 48271) { isMult8(it) }
 
         assertThat(generator.take(5).toList()).containsExactly(1233683848, 862516352, 1159784568, 1616057672, 412269392)
     }
 
     @Test
     fun `it should count matching pairs for generators with criteria`() {
-        val generatorA = generator(65, 16807) { it % 4 == 0L }
-        val generatorB = generator(8921, 48271) { it % 8 == 0L }
+        val generatorA = generator(65, 16807) { isMult4(it) }
+        val generatorB = generator(8921, 48271) { isMult8(it) }
 
         val matches = matches(generatorA, generatorB, 5_000_000)
 
@@ -86,8 +89,8 @@ class Tests {
 
     @Test
     fun `it should solve puzzle 2`() {
-        val generatorA = generator(703, 16807) { it % 4 == 0L }
-        val generatorB = generator(516, 48271) { it % 8 == 0L }
+        val generatorA = generator(703, 16807) { isMult4(it) }
+        val generatorB = generator(516, 48271) { isMult8(it) }
 
         val matches = matches(generatorA, generatorB, 5_000_000)
 
