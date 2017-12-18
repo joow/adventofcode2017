@@ -1,7 +1,7 @@
 class SoundCard {
-    val registers = mutableMapOf<String, Int>()
-    val played: MutableList<Int> = mutableListOf()
-    val recovered: MutableList<Int> = mutableListOf()
+    val registers = mutableMapOf<String, Long>()
+    val played: MutableList<Long> = mutableListOf()
+    val recovered: MutableList<Long> = mutableListOf()
 
     private var line = 0
 
@@ -26,10 +26,10 @@ class SoundCard {
             else -> throw RuntimeException("unknown instruction $instruction")
         }
 
-    private fun getRegisterNameAndValue(instruction: String): Pair<String, Int> {
+    private fun getRegisterNameAndValue(instruction: String): Pair<String, Long> {
         val (registerName, term) = instruction.split(" ").take(2)
-        val value = if (term.length == 1 && term.first().isLetter()) registers.getOrDefault(term, 0)
-                         else term.toInt()
+        val value = if (term.first().isLetter()) registers.getOrDefault(term, 0L)
+                         else term.toLong()
 
         return Pair(registerName, value)
     }
@@ -68,7 +68,7 @@ class SoundCard {
 
     private fun rcv(instruction: String): Int {
         val registerValue = registers.getOrDefault(instruction, 0)
-        if (registerValue > 0) {
+        if (registerValue != 0L) {
             recovered.add(played.last())
             return 100
         }
@@ -80,8 +80,8 @@ class SoundCard {
         val (registerName, value) = getRegisterNameAndValue(instruction)
 
         val registerValue = if (registerName.first().isLetter()) registers.getOrDefault(registerName, 0)
-        else registerName.toInt()
+        else registerName.toLong()
 
-        return if (registerValue > 0) value else 1
+        return if (registerValue > 0L) value.toInt() else 1
     }
 }
