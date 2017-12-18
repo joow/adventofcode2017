@@ -1,5 +1,5 @@
-class SoundCard {
-    val registers = mutableMapOf<String, Long>()
+class SoundCard(val id: Long = 0) {
+    val registers = mutableMapOf("p" to id)
     val played: MutableList<Long> = mutableListOf()
     val recovered: MutableList<Long> = mutableListOf()
 
@@ -24,10 +24,12 @@ class SoundCard {
             else -> throw RuntimeException("unknown instruction $instruction")
         }
 
+    private fun getValue(term: String) =
+            if (term.first().isLetter()) registers.getOrDefault(term, id) else term.toLong()
+
     private fun getRegisterNameAndValue(instruction: String): Pair<String, Long> {
         val (registerName, term) = instruction.split(" ").take(2)
-        val value = if (term.first().isLetter()) registers.getOrDefault(term, 0L)
-                         else term.toLong()
+        val value = getValue(term)
 
         return Pair(registerName, value)
     }
@@ -40,32 +42,32 @@ class SoundCard {
 
     private fun add(instruction: String): Int {
         val (registerName, value) = getRegisterNameAndValue(instruction)
-        val registerValue = registers.getOrDefault(registerName, 0)
+        val registerValue = getValue(registerName)
         registers[registerName] = registerValue + value
         return 1
     }
 
     private fun mul(instruction: String): Int {
         val (registerName, value) = getRegisterNameAndValue(instruction)
-        val registerValue = registers.getOrDefault(registerName, 0)
+        val registerValue = getValue(registerName)
         registers[registerName] = registerValue * value
         return 1
     }
 
     private fun mod(instruction: String): Int {
         val (registerName, value) = getRegisterNameAndValue(instruction)
-        val registerValue = registers.getOrDefault(registerName, 0)
+        val registerValue = getValue(registerName)
         registers[registerName] = registerValue % value
         return 1
     }
 
     private fun snd(instruction: String): Int {
-        played.add(registers.getOrDefault(instruction, 0))
+        played.add(getValue(instruction))
         return 1
     }
 
     private fun rcv(instruction: String): Int {
-        val registerValue = registers.getOrDefault(instruction, 0)
+        val registerValue = getValue(instruction)
         if (registerValue != 0L) {
             recovered.add(played.last())
             return 100
@@ -76,9 +78,7 @@ class SoundCard {
 
     private fun jgz(instruction: String): Int {
         val (registerName, value) = getRegisterNameAndValue(instruction)
-
-        val registerValue = if (registerName.first().isLetter()) registers.getOrDefault(registerName, 0)
-        else registerName.toLong()
+        val registerValue = getValue(registerName)
 
         return if (registerValue > 0L) value.toInt() else 1
     }
