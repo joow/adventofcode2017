@@ -112,6 +112,6 @@ class Tests {
 
         soundCard.evaluate(puzzle.split("\n").filterNot { it.isBlank() })
 
-        assertThat(soundCard.recovered.first()).isEqualTo(4)
+        assertThat(soundCard.recovered.first()).isEqualTo(7071)
     }
 }
