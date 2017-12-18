@@ -1,18 +1,19 @@
+import kotlinx.coroutines.experimental.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class Tests {
 
     private val input = """set a 1
-    |add a 2
-    |mul a a
-    |mod a 5
-    |snd a
-    |set a 0
-    |rcv a
-    |jgz a -1
-    |set a 1
-    |jgz a -2""".trimMargin()
+        |add a 2
+        |mul a a
+        |mod a 5
+        |snd a
+        |set a 0
+        |rcv a
+        |jgz a -1
+        |set a 1
+        |jgz a -2""".trimMargin()
 
     private val puzzle = Tests::class.java.getResource("input").readText()
 
@@ -113,5 +114,12 @@ class Tests {
         soundCard.evaluate(puzzle.split("\n").filterNot { it.isBlank() })
 
         assertThat(soundCard.recovered.first()).isEqualTo(7071)
+    }
+
+    @Test
+    fun `it should solve puzzle 2`() = runBlocking<Unit> {
+        val sent = evaluate(Tests::class.java.getResource("input").readText().split("\n").filterNot { it.isBlank() })
+
+        assertThat(sent).isEqualTo(8001)
     }
 }
