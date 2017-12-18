@@ -8,8 +8,6 @@ class SoundCard {
     fun evaluate(instructions: List<String>) {
         while (line < instructions.size) {
             val instruction = instructions[line]
-            println(instruction)
-            println(registers)
             line += evaluate(instruction)
         }
     }
