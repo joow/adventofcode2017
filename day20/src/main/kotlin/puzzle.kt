@@ -28,11 +28,11 @@ private tailrec fun removeColliding(particles: List<Particle>, acc: List<Particl
     else removeColliding(particles.filterNot { it.position == particle.position }, acc)
 }
 
-class Particle(val position: Coordinate, val velocity: Coordinate, val acceleration: Coordinate, val order: Int) {
+class Particle(val position: Vector, val velocity: Vector, val acceleration: Vector, val order: Int) {
 
     fun tick(): Particle {
-        val newVelocity = Coordinate(velocity.x + acceleration.x, velocity.y + acceleration.y, velocity.z + acceleration.z)
-        val newPosition = Coordinate(position.x + newVelocity.x, position.y + newVelocity.y, position.z + newVelocity.z)
+        val newVelocity = Vector(velocity.x + acceleration.x, velocity.y + acceleration.y, velocity.z + acceleration.z)
+        val newPosition = Vector(position.x + newVelocity.x, position.y + newVelocity.y, position.z + newVelocity.z)
 
         return Particle(newPosition, newVelocity, acceleration, order)
     }
@@ -51,11 +51,11 @@ class Particle(val position: Coordinate, val velocity: Coordinate, val accelerat
             return Particle(position, velocity, acceleration, order)
         }
 
-        private fun parseCoordinate(s: String): Coordinate {
+        private fun parseCoordinate(s: String): Vector {
             val coordinate = s.substringAfter("<").substringBefore(">").split(",")
-            return Coordinate(coordinate[0].trim().toLong(), coordinate[1].trim().toLong(), coordinate[2].trim().toLong())
+            return Vector(coordinate[0].trim().toLong(), coordinate[1].trim().toLong(), coordinate[2].trim().toLong())
         }
     }
 }
 
-data class Coordinate(val x: Long, val y: Long, val z: Long)
+data class Vector(val x: Long, val y: Long, val z: Long)

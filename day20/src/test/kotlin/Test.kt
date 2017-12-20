@@ -1,5 +1,4 @@
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Ignore
 import org.junit.Test
 
 class Tests {
@@ -13,9 +12,9 @@ class Tests {
     fun `it should parse one particle`() {
         val particle = Particle.parse("p=< 3,0,0>, v=< 2,0,0>, a=<-1,0,0>")
 
-        assertThat(particle.position).isEqualTo(Coordinate(3, 0, 0))
-        assertThat(particle.velocity).isEqualTo(Coordinate(2, 0, 0))
-        assertThat(particle.acceleration).isEqualTo(Coordinate(-1, 0, 0))
+        assertThat(particle.position).isEqualTo(Vector(3, 0, 0))
+        assertThat(particle.velocity).isEqualTo(Vector(2, 0, 0))
+        assertThat(particle.acceleration).isEqualTo(Vector(-1, 0, 0))
     }
 
     @Test
@@ -31,9 +30,9 @@ class Tests {
 
         val newParticle = particle.tick()
 
-        assertThat(newParticle.position).isEqualTo(Coordinate(4, 0, 0))
-        assertThat(newParticle.velocity).isEqualTo(Coordinate(1, 0, 0))
-        assertThat(newParticle.acceleration).isEqualTo(Coordinate(-1, 0, 0))
+        assertThat(newParticle.position).isEqualTo(Vector(4, 0, 0))
+        assertThat(newParticle.velocity).isEqualTo(Vector(1, 0, 0))
+        assertThat(newParticle.acceleration).isEqualTo(Vector(-1, 0, 0))
     }
 
     @Test
@@ -42,9 +41,9 @@ class Tests {
 
         val newParticle = tick(particle, 3)
 
-        assertThat(newParticle.position).isEqualTo(Coordinate(3, 0, 0))
-        assertThat(newParticle.velocity).isEqualTo(Coordinate(-1, 0, 0))
-        assertThat(newParticle.acceleration).isEqualTo(Coordinate(-1, 0, 0))
+        assertThat(newParticle.position).isEqualTo(Vector(3, 0, 0))
+        assertThat(newParticle.velocity).isEqualTo(Vector(-1, 0, 0))
+        assertThat(newParticle.acceleration).isEqualTo(Vector(-1, 0, 0))
     }
 
     @Test
