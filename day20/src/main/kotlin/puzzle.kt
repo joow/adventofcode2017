@@ -12,20 +12,10 @@ fun collide(s: String, ticks: Int = 10): List<Particle> {
     var articles = parse(s)
 
     for (i in 1..ticks) {
-        articles = articles.map { it.tick() }
-        articles = removeColliding(articles)
+        articles = articles.map { it.tick() }.groupBy { it.position }.filterValues { it.size == 1 }.map { it.value.first() }
     }
 
     return articles
-}
-
-private tailrec fun removeColliding(particles: List<Particle>, acc: List<Particle> = emptyList()): List<Particle> {
-    if (particles.isEmpty()) return acc
-
-    val particle = particles.first()
-
-    return if (particles.drop(1).none { it.position == particle.position }) removeColliding(particles.drop(1), acc.plus(particle))
-    else removeColliding(particles.filterNot { it.position == particle.position }, acc)
 }
 
 class Particle(val position: Vector, val velocity: Vector, val acceleration: Vector, val order: Int) {
