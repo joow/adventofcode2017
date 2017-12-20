@@ -63,7 +63,7 @@ class Tests {
 
     @Test
     fun `it should solve puzzle 1`() {
-        val closest = closest(puzzle, 10_000)
+        val closest = closest(puzzle, 1_000)
 
         assertThat(closest).isEqualTo(157)
     }
@@ -80,7 +80,7 @@ class Tests {
 
     @Test
     fun `it should solve puzzle 2`() {
-        val particles = collide(puzzle, 10_000)
+        val particles = collide(puzzle, 1_000)
 
         assertThat(particles).hasSize(499)
     }
